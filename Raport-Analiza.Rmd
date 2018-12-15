@@ -1,10 +1,11 @@
 ---
-title: "Raport"
+title: "Raport-2"
 author: "Wojciech Duda"
-date: "21 listopada 2018"
-output: 
+date: "12 Grudnia 2018"
+output:
   html_document:
-    toc: true 
+    keep_md: yes
+    toc: yes
 ---
 
 ## Bbiblioteki
@@ -24,11 +25,11 @@ library(e1071)
 
 ##Wczytanie wstepnie przetworzonych danych
 
-Csv zosta³ przygotowany w 'Raport-czytanie i czyszczenie'
+Csv zostal przygotowany w 'Raport-czytanie i czyszczenie'
 
 ```{R czytanie danych}
 #Data <- read.csv("MyData.csv",  sep=',', comment.char="", na.strings='nan', header=TRUE)
-Data <- read.csv("MyData.csv",nrow=3000,  sep=',', comment.char="", na.strings='nan', header=TRUE)
+Data <- read.csv("MyData.csv",nrow=250000,  sep=',', comment.char="", na.strings='nan', header=TRUE)
 
 ```
 Za³adowano `r nrow(Data)` wierszy, które maj¹ `r ncol(Data)` zmiennych.
@@ -53,8 +54,8 @@ rm(unikalne)
 kable(summary(Data))
 ```
 
-# Korelacje miêdzy zmiennymi
-Korelacje miêdzy zmiennymi. Pominiêto local_min.
+# Korelacje miedzy zmiennymi
+Korelacje miedzy zmiennymi. 
 
 ```{R korelacje}
 corrplot(cor(Data %>% select(local_res_atom_non_h_count:local_std,local_max:FoFc_max)),method="color", tl.cex = 0.1)
@@ -110,17 +111,18 @@ lm_electron_summary <- summary(lm_electron_model)
 
 ```
 
-Miary dla liczby atomów:
+Miary dla liczby atomow:
 R^2: `r lm_atom_summary$r.squared`
 RMSE `r lm_atom_summary$sigma`
 
-Miary dla liczby elektronów:
+Miary dla liczby elektronow:
 R^2: `r lm_electron_summary$r.squared`
 RMSE `r lm_electron_summary$sigma`
 
 #Klasyfikator Bayesa na atrybucie res_name
 
 ```{R Klasyfikator}
+Data<-Data[1:3000,]
 Klasyfikator<-predict(naiveBayes(res_name ~., data=Data[-1]),Data[-1])
 Klasyfikator == Data$res_name
 ```
